@@ -44,5 +44,5 @@ public interface MailService {
      * @param rscPath 图片本地路径
      * @param rscId   图片ID
      */
-    void sendImgResourceMail(String to, String subject, String content, String rscPath, String rscId);
+    void sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId);
 }
