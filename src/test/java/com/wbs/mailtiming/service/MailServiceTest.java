@@ -36,13 +36,13 @@ public class MailServiceTest {
                 "<h3>hello world!这是一封html邮件</h3>\n" +
                 "</body>\n" +
                 "</html>";
-        mailService.sendHtmlMail("1264747002@qq.com", "简单带html邮件", content);
+        mailService.sendHtmlMail("德玛西亚", "1264747002@qq.com", "简单带html邮件", content);
     }
 
     @Test
     public void sendAttachmentMailTest() {
         String filePath = "/Users/wangbingshuai/package/java相关安装包/redis-5.0.5.tar.gz";
-        mailService.sendAttachmentMail("1264747002@qq.com", "带附件的邮件", "有附件，请查收", filePath);
+        mailService.sendAttachmentMail("德玛西亚", "1264747002@qq.com", "带附件的邮件", "有附件，请查收", filePath);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MailServiceTest {
         String rscId = "wbs";
         String content = "<html><body>这是带图片的邮件：<img src=\'cid:" + rscId + "\'/></body></html>";
         String imgPath = "/Users/wangbingshuai/test/headPortrait.png";
-        mailService.sendInlineResourceMail("1264747002@qq.com", "带有图片的邮件", content, imgPath, rscId);
+        mailService.sendInlineResourceMail("德玛西亚", "1264747002@qq.com", "带有图片的邮件", content, imgPath, rscId);
     }
 
     @Test
@@ -58,6 +58,6 @@ public class MailServiceTest {
         Context context = new Context();
         context.setVariable("id", "002");
         String emailContent = templateEngine.process("emailTemplate", context);
-        mailService.sendHtmlMail("1264747002@qq.com", "模板邮件", emailContent);
+        mailService.sendHtmlMail("德玛西亚", "1264747002@qq.com", "模板邮件", emailContent);
     }
 }

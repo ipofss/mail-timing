@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -46,11 +47,15 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendHtmlMail(String to, String subject, String content, String... copyTo) {
+    public void sendHtmlMail(String fromName, String to, String subject, String content, String... copyTo) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
+            if (StringUtils.isEmpty(fromName)) {
+                helper.setFrom(from);
+            } else {
+                helper.setFrom(from, fromName);
+            }
             helper.setTo(to);
             if (copyTo != null && copyTo.length > 0) {
                 helper.setCc(copyTo);
@@ -59,17 +64,21 @@ public class MailServiceImpl implements MailService {
             helper.setText(content, true);
             mailSender.send(message);
             log.info("html邮件发送成功");
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("发送html邮件时发生异常！", e);
         }
     }
 
     @Override
-    public void sendAttachmentMail(String to, String subject, String content, String filePath, String... copyTo) {
+    public void sendAttachmentMail(String fromName, String to, String subject, String content, String filePath, String... copyTo) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
+            if (StringUtils.isEmpty(fromName)) {
+                helper.setFrom(from);
+            } else {
+                helper.setFrom(from, fromName);
+            }
             helper.setTo(to);
             if (copyTo != null && copyTo.length > 0) {
                 helper.setCc(copyTo);
@@ -81,17 +90,21 @@ public class MailServiceImpl implements MailService {
             helper.addAttachment(fileName, file);
             mailSender.send(message);
             log.info("带附件的邮件已经发送。");
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("发送带附件的邮件时发生异常！", e);
         }
     }
 
     @Override
-    public void sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId, String... copyTo) {
+    public void sendInlineResourceMail(String fromName, String to, String subject, String content, String rscPath, String rscId, String... copyTo) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
+            if (StringUtils.isEmpty(fromName)) {
+                helper.setFrom(from);
+            } else {
+                helper.setFrom(from, fromName);
+            }
             helper.setTo(to);
             if (copyTo != null && copyTo.length > 0) {
                 helper.setCc(copyTo);
@@ -102,7 +115,7 @@ public class MailServiceImpl implements MailService {
             helper.addInline(rscId, img);
             mailSender.send(message);
             log.info("嵌入静态资源的邮件已经发送。");
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("发送嵌入静态资源的文件时发生异常！", e);
         }
     }
