@@ -26,7 +26,7 @@ public class MailServiceTest {
 
     @Test
     public void sendSimpleMailTest() {
-        mailService.sendSimpleMail("1264747002@qq.com", "简单邮件标题", "简单邮件内容");
+        mailService.sendSimpleMail("1264747002@qq.com", "简单邮件标题", "简单邮件内容", "wangbingshuai@zmeng123.com");
     }
 
     @Test

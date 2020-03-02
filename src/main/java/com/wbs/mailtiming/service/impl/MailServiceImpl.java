@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 发送邮件服务实现
@@ -31,10 +32,13 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender mailSender;
 
     @Override
-    public void sendSimpleMail(String to, String subject, String content) {
+    public void sendSimpleMail(String to, String subject, String content, String... copyTo) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
+        if (copyTo != null && copyTo.length > 0) {
+            message.setCc(copyTo);
+        }
         message.setSubject(subject);
         message.setText(content);
         mailSender.send(message);
@@ -42,12 +46,15 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendHtmlMail(String to, String subject, String content) {
+    public void sendHtmlMail(String to, String subject, String content, String... copyTo) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
             helper.setTo(to);
+            if (copyTo != null && copyTo.length > 0) {
+                helper.setCc(copyTo);
+            }
             helper.setSubject(subject);
             helper.setText(content, true);
             mailSender.send(message);
@@ -58,12 +65,15 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendAttachmentMail(String to, String subject, String content, String filePath) {
+    public void sendAttachmentMail(String to, String subject, String content, String filePath, String... copyTo) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
             helper.setTo(to);
+            if (copyTo != null && copyTo.length > 0) {
+                helper.setCc(copyTo);
+            }
             helper.setSubject(subject);
             helper.setText(content, true);
             FileSystemResource file = new FileSystemResource(new File(filePath));
@@ -77,12 +87,15 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId) {
+    public void sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId, String... copyTo) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
             helper.setTo(to);
+            if (copyTo != null && copyTo.length > 0) {
+                helper.setCc(copyTo);
+            }
             helper.setSubject(subject);
             helper.setText(content, true);
             FileSystemResource img = new FileSystemResource(new File(rscPath));
